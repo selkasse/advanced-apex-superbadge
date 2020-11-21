@@ -41,14 +41,14 @@ public class Product2Extension {
             List<PriceBookEntry> priceBookEntrires = new List<PriceBookEntry>();
 
             for(ProductWrapper wrapper: productsToInsert){
-                // if(!String.isBlank(wrapper.productRecord.Name) && !String.isBlank(wrapper.productRecord.Family) && 
-                //    wrapper.productRecord.Family!=Constants.SELECT_ONE && wrapper.productRecord.isActive &&
-                //    wrapper.pricebookEntryRecord.UnitPrice!=null && wrapper.productRecord.Initial_Inventory__c!=null && 
-                //    wrapper.productRecord.Initial_Inventory__c!=0 && wrapper.pricebookEntryRecord.UnitPrice!=0){
+                if(!String.isBlank(wrapper.productRecord.Name) && !String.isBlank(wrapper.productRecord.Family) && 
+                   wrapper.productRecord.Family!=Constants.SELECT_ONE && wrapper.productRecord.isActive &&
+                   wrapper.pricebookEntryRecord.UnitPrice!=null && wrapper.productRecord.Initial_Inventory__c!=null && 
+                   wrapper.productRecord.Initial_Inventory__c!=0 && wrapper.pricebookEntryRecord.UnitPrice!=0){
 
                        products.add(wrapper.productRecord);
                        priceBookEntrires.add(wrapper.priceBookEntryRecord);
-                //    }
+                   }
             }
 
             insert products;

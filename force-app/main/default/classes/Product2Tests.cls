@@ -7,7 +7,11 @@ private class Product2Tests {
     **/
     static TestMethod void Product2Extension_UnitTest(){
         Test.startTest();
-            Product2Extension ext = new Product2Extension();
+            Product2 prod = new Product2(name='Test',isActive=true);
+            ApexPages.StandardController stdcontroller = new ApexPages.StandardController(prod);
+
+            Product2Extension ext = new Product2Extension(stdcontroller);
+            
             ext.addRows();
             ext.save();
         Test.stopTest();
