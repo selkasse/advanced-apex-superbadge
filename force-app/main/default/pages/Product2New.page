@@ -1,4 +1,4 @@
-<apex:page standardController="Product2" extensions="Product2Extension">
+<apex:page standardController="Product2" extensions="Product2Extension" standardStylesheets="false" showHeader="false">
     <apex:sectionHeader title="New Product" subtitle="Add Inventory" />
     <apex:pageMessages id="pageMessages" />
     <apex:form id="form">

@@ -1,4 +1,4 @@
-public with sharing class Constants {
+public class Constants {
     public static final Integer DEFAULT_ROWS = 5;
     public static final String SELECT_ONE = Label.Select_One;
     public static final String INVENTORY_LEVEL_LOW = Label.Inventory_Level_Low;
@@ -7,5 +7,5 @@ public with sharing class Constants {
     public static final String ACTIVATED_ORDER_STATUS = 'Activated';
     public static final String INVENTORY_ANNOUNCEMENTS = 'Inventory Announcements';
     public static final String ERROR_MESSAGE = 'An error has occurred, please take a screenshot with the URL and send it to IT.';
-    public static final Id STANDARD_PRICEBOOK_ID = [SELECT Id, Name, IsStandard FROM Pricebook2 WHERE IsStandard = TRUE LIMIT 1].Id;
+    public static final Id STANDARD_PRICEBOOK_ID = Test.isRunningTest() ? Test.getStandardPricebookId() : [SELECT Id From Pricebook2 WHERE IsStandard = true].Id;
 }
