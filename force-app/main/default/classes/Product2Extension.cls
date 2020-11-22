@@ -78,7 +78,8 @@ public class Product2Extension {
         return null;
     }
 
-    class ProductWrapper {
+    
+    public class ProductWrapper {
         public Product2 productRecord {get;set;}
         public PriceBookEntry pricebookEntryRecord {get;set;}
 

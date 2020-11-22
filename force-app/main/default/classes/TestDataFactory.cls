@@ -164,6 +164,13 @@ public with sharing class TestDataFactory {
         return items;
     }
 
+    // * This method should perform an assertion that verifies that updatedProduct's Quantity_Ordered__c field 
+    // *    is equal to the sum of the originalProduct's Quantity_Ordered__c field
+    // *    and the value of qtyOrdered.
+    public static void VerifyQuantityOrdered(Product2 originalProduct, Product2 updatedProduct, Integer qtyOrdered){
+        System.assertEquals(updatedProduct.Quantity_Ordered__c, originalProduct.Quantity_Ordered__c + qtyOrdered);
+    }
+
     /**
      * @name SetupTestData
      * @description Inserts accounts, contacts, Products, PricebookEntries, Orders, and OrderItems.
