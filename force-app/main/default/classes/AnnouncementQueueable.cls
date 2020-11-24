@@ -2,9 +2,13 @@
  * @name AnnouncementQueueable
  * @description This class posts Chatter Announcements
 **/
-public class AnnouncementQueueable {
+public class AnnouncementQueueable implements Queueable {
 
     public List<ConnectApi.AnnouncementInput> toPost;
+
+    public void execute(QueueableContext context) {
+       PostAnnouncements(toPost);
+    }
 
     //ToDo: Modify this class to implement the Queueable interface and call the postAnnouncements method
 
@@ -27,6 +31,7 @@ public class AnnouncementQueueable {
             q.toPost = announcements;
 
             //ToDo: Enqueue the above instance of announcementQueueable
+            ID jobID = System.enqueueJob(q);
         }
     }
 
