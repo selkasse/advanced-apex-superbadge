@@ -4,11 +4,6 @@
     <apex:form id="form">
         <apex:actionRegion>
             <apex:pageBlock title="Existing Inventory" id="inventory">
-                <!-- Chart goes here -->
-                <!-- <apex:chart height="350" width="450" data="{!chart}">
-                    <apex:pieSeries dataField="val" labelField="name" />
-                    <apex:legend position="right" />
-                </apex:chart> -->
                 <apex:chart data="{!inventory}" width="600" height="400">
                     <apex:axis type="Category" fields="name" position="left" title="Product Family" />
                     <apex:axis type="Numeric" fields="val" position="bottom" title="Quantity Remaining" />
