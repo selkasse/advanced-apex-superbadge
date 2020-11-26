@@ -52,6 +52,7 @@ public class Product2Extension {
 
             insert products;
 
+
             Map<Id, PriceBookEntry> productToEntryMap = new Map<Id, PriceBookEntry>();
 
             for(ProductWrapper wrapper: productsToInsert){
@@ -86,6 +87,10 @@ public class Product2Extension {
             productRecord = new Product2();
             pricebookEntryRecord = new PriceBookEntry();
             pricebookEntryRecord.Pricebook2Id = Constants.STANDARD_PRICEBOOK_ID;
+
+            // productRecord = new Product2(Initial_Inventory__c =0, Name='Test Product', isActive=true); pricebookEntryRecord = new PricebookEntry(Unitprice=0.0);
+
+            
         }
     }
 

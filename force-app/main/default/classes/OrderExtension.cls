@@ -10,6 +10,9 @@ public class OrderExtension {
     public List<chartHelper.chartData> pieData {get;set;}
     public Decimal total {get;set;}
 
+    public List<PricebookEntry> entries;
+
+
     public Map<Id,OrderItem> orderItemMap;
     ApexPages.StandardSetController standardSetController;
 
@@ -50,7 +53,6 @@ public class OrderExtension {
     }
 
     public void loadStandardSetController(String family){
-        List<PricebookEntry> entries;
         if (family == null){
             
             entries = [SELECT Name, Product2.Family, Product2.Name, Product2Id, UnitPrice, Product2.Quantity_Remaining__c, IsActive
