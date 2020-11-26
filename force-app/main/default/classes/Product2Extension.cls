@@ -30,50 +30,93 @@ public class Product2Extension {
         return ChartHelper.GetInventory();
     }
 
-    public PageReference Save(){
+    // public PageReference Save(){
 
-        Savepoint sp = Database.setSavepoint();
+    //     Savepoint sp = Database.setSavepoint();
 
-        try {
-            // insert productsToInsert;
-            List<Product2> products = new List<Product2>();
-            List<PriceBookEntry> priceBookEntrires = new List<PriceBookEntry>();
+    //     try {
+    //         // insert productsToInsert;
+    //         List<Product2> products = new List<Product2>();
+    //         List<PriceBookEntry> priceBookEntrires = new List<PriceBookEntry>();
 
-            for(ProductWrapper wrapper: productsToInsert){
-                if(!String.isBlank(wrapper.productRecord.Name) && !String.isBlank(wrapper.productRecord.Family) && 
-                   wrapper.productRecord.Family!=Constants.SELECT_ONE && wrapper.productRecord.isActive &&
-                   wrapper.pricebookEntryRecord.UnitPrice!=null && wrapper.productRecord.Initial_Inventory__c!=null && 
-                   wrapper.productRecord.Initial_Inventory__c!=0 && wrapper.pricebookEntryRecord.UnitPrice!=0){
+    //         for(ProductWrapper wrapper: productsToInsert){
+    //             if(!String.isBlank(wrapper.productRecord.Name) && !String.isBlank(wrapper.productRecord.Family) && 
+    //                wrapper.productRecord.Family!=Constants.SELECT_ONE && wrapper.productRecord.isActive &&
+    //                wrapper.pricebookEntryRecord.UnitPrice!=null && wrapper.productRecord.Initial_Inventory__c!=null && 
+    //                wrapper.productRecord.Initial_Inventory__c!=0 && wrapper.pricebookEntryRecord.UnitPrice!=0){
 
-                       products.add(wrapper.productRecord);
-                       priceBookEntrires.add(wrapper.priceBookEntryRecord);
-                   }
-            }
+    //                    products.add(wrapper.productRecord);
+    //                    priceBookEntrires.add(wrapper.priceBookEntryRecord);
+    //                }
+    //         }
 
-            insert products;
+    //         // insert products;
+
+    //         Database.SaveResult[] productSaveResults = Database.INSERT(products, false);
 
 
-            Map<Id, PriceBookEntry> productToEntryMap = new Map<Id, PriceBookEntry>();
+    //         Map<Id, PriceBookEntry> productToEntryMap = new Map<Id, PriceBookEntry>();
 
-            for(ProductWrapper wrapper: productsToInsert){
+    //         for(ProductWrapper wrapper: productsToInsert){
                 
-                productToEntryMap.put(wrapper.productRecord.id, wrapper.priceBookEntryRecord);
+    //             productToEntryMap.put(wrapper.productRecord.id, wrapper.priceBookEntryRecord);
                    
-            }
+    //         }
 
-            for(ProductWrapper wrapper: productsToInsert){
-                productToEntryMap.get(wrapper.productRecord.id).Product2Id = wrapper.productRecord.id;
-            }
-            insert priceBookEntrires;
+    //         for(ProductWrapper wrapper: productsToInsert){
+    //             productToEntryMap.get(wrapper.productRecord.id).Product2Id = wrapper.productRecord.id;
+    //         }
 
+    //         // insert priceBookEntrires;
+    //         Database.SaveResult[] pbeSaveResults = Database.INSERT(priceBookEntrires, false);
+
+    //         //If successful clear the list and display an informational message
+    //         apexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO,productsToInsert.size()+' Inserted'));
+    //         productsToInsert.clear();   //Do not remove
+    //         addRows();  //Do not remove
+    //     } catch (Exception e){
+    //         ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,Constants.ERROR_MESSAGE));
+    //         Database.rollback(sp);
+    //         return null;
+    //     }
+    //     return null;
+    // }
+
+    public PageReference Save(){
+        SavePoint sp = Database.setSavepoint();
+        try {
+            List<Product2> products = new List<Product2>();
+            List<PricebookEntry> entries = new List<PricebookEntry>();
+            
+            for (ProductWrapper wrp : productsToInsert){
+                if(null!=wrp.productRecord && null!=wrp.pricebookEntryRecord){
+                    
+                    if(null!=wrp.productRecord.Name && null!=wrp.productRecord.Family && constants.SELECT_ONE!=wrp.productRecord.Family
+                       && null!=wrp.productRecord.Initial_Inventory__c && null!=wrp.pricebookEntryRecord.UnitPrice){
+                        products.add(wrp.productRecord);
+                        PricebookEntry entry=wrp.pricebookEntryRecord;
+                        entry.IsActive = true;
+                        entry.Pricebook2Id = constants.STANDARD_PRICEBOOK_ID;
+                        entries.add(entry);   
+                    }
+                }
+            }
+            
+            insert products;            
+            for (integer itr=0; itr<entries.size();itr++){
+                entries[itr].Product2Id=products[itr].id;
+            }
+            insert entries;
+            
             //If successful clear the list and display an informational message
-            apexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO,productsToInsert.size()+' Inserted'));
+            apexPages.addMessage(new ApexPages.message(ApexPages.Severity.INFO, productsToInsert.size() + ' Inserted'));
             productsToInsert.clear();   //Do not remove
             addRows();  //Do not remove
-        } catch (Exception e){
-            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,Constants.ERROR_MESSAGE));
+        } 
+        catch (Exception e){
+            System.debug('Exception occured:'+e.getMessage());
             Database.rollback(sp);
-            return null;
+            apexPages.addMessage(new ApexPages.message(ApexPages.Severity.ERROR, Constants.ERROR_MESSAGE));            
         }
         return null;
     }
